@@ -87,19 +87,42 @@ if (__name__ == "__main__"):
             except:
                 speak("Sorry. No results found")
 
-        elif 'open google' in query:
+        elif 'google' in query:
             speak("sir. what should i search on google")
             cm =takeCommand().lower()
             webbrowser.open('https://google.com/?#q='+ cm)
 
-        elif 'open youtube' in query:
+        elif 'youtube' in query:
             speak("What should I search on youtube")
             command = takeCommand().lower()
             webbrowser.open('https://www.youtube.com/results?search_query= ' + command)
 
+        elif "facebook" in query:
+            driver = webdriver.Chrome("Your_Driver_Path")
+            driver.get("https://facebook.com")
+            searchbox = driver.find_element_by_xpath('//*[@id="email"]')
+            searchbox.send_keys("Your_Login_ID")
+            searchPassword = driver.find_element_by_xpath('//*[@id="pass"]')
+            searchPassword.send_keys("Your_Password")
+            searchButton = driver.find_element_by_xpath('//*[@id="u_0_b"]')
+            searchButton.click()
+
+        elif "outlook" in query:
+            driver = webdriver.Chrome("Your_Driver_Path")
+            driver.get("https://outlook.live.com")
+    
+            searchButton = driver.find_element_by_xpath('/html/body/header/div/aside/div/nav/ul/li[2]/a')
+            searchButton.click()
+
+            searchbox = driver.find_element_by_xpath('//*[@id="i0116"]')
+            searchbox.send_keys("Your_Email")
+
+            searchButton = driver.find_element_by_xpath('//*[@id="idSIButton9"]')
+            searchButton.click()
+
         elif "play music" in query:
             speak("Loading Music")
-            musicDirectory = "YourPathHere"
+            musicDirectory = "YourDirectoryPathHere"
             songs = os.listdir(musicDirectory) # returns a list which contains the contents of directory
             os.startfile(os.path.join(musicDirectory, songs[randint(0, len(songs) - 1)])) # plays any random song in the directory
 
@@ -153,7 +176,7 @@ if (__name__ == "__main__"):
             openApp(app)
 
         elif "start data structures lecture" in query:
-            driver = webdriver.Chrome("F:/chromedriver_win32/chromedriver.exe")
+            driver = webdriver.Chrome("Your_Driver_Path_Here")
             driver.get('https://moodle.coep.org.in/moodle/login/index.php') # Fire up a get request
 
             username = driver.find_element_by_xpath('//*[@id="username"]')
