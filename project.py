@@ -120,6 +120,32 @@ if (__name__ == "__main__"):
             searchButton = driver.find_element_by_xpath('//*[@id="idSIButton9"]')
             searchButton.click()
 
+        elif "moodle" in query:
+            driver = webdriver.Chrome("Your_Driver_Path")
+            driver.get("https://moodle.coep.org.in")
+
+            searchbox = driver.find_element_by_xpath('//*[@id="username"]')
+            searchbox.send_keys("Your_MIS")
+
+            searchPassword = driver.find_element_by_xpath('//*[@id="password"]')
+            searchPassword.send_keys("Your_Password")
+
+            searchButton = driver.find_element_by_xpath('//*[@id="loginbtn"]')
+            searchButton.click()
+
+        elif "mis" in query:
+            driver = webdriver.Chrome("Your_Driver_Path")
+            driver.get("http://portal.coep.org.in:9093/SignUp?ReturnUrl=%2f")
+
+            searchbox = driver.find_element_by_xpath('//*[@id="UserName"]')
+            searchbox.send_keys("Your_MIS")
+
+            searchPassword = driver.find_element_by_xpath('//*[@id="Password"]')
+            searchPassword.send_keys("Your_Password")
+
+            searchButton = driver.find_element_by_xpath('//*[@id="btnSignIn"]')
+            searchButton.click()
+
         elif "play music" in query:
             speak("Loading Music")
             musicDirectory = "YourDirectoryPathHere"
