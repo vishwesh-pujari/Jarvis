@@ -80,10 +80,9 @@ if (__name__ == "__main__"):
             speak("Searching Wikipedia...")
             try:
                 query = query.replace("wikipedia", "") # Delete wikipedia from the query string
-                results = wikipedia.summary(query)
+                results = wikipedia.summary(query, sentences = 3)
                 speak("According to Wikipedia...")
-                #print(results)
-                speak(results, sentences = 3)
+                speak(results)
             except:
                 speak("Sorry. No results found")
 
@@ -217,7 +216,7 @@ if (__name__ == "__main__"):
         elif "write a note" in query: 
             speak("What should i write, sir") 
             note = takeCommand() 
-            file = open('jarvis.txt', 'a') 
+            file = open('ntoes.txt', 'a') 
             speak("Sir, Should i include date and time") 
             snfm = takeCommand() 
             if 'yes' in snfm or 'sure' in snfm: 
@@ -231,8 +230,18 @@ if (__name__ == "__main__"):
           
         elif "show note" in query: 
             speak("Showing Notes") 
-            file = open("jarvis.txt", "r")  
-            print(file.read()) 
+            file = open("notes.txt", "r")  
+            print(file.read())
+
+        elif "delete note" in query:
+            speak("Which note do you want to delete?")
+            delete = takeCommand()
+            with open("notes.txt", "r") as f:
+                lines = f.readlines()
+            with open("notes.txt", "w") as f:
+                for line in lines:
+                    if delete not in line:
+                        f.write(line)
 
         elif "joke" in query:
             speak(pyjokes.get_joke())
