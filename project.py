@@ -7,8 +7,9 @@ import os # for playing music
 from random import randint
 from selenium import webdriver # For Web Scraping
 import pyjokes
-import requests # For weather. requests module is used for making GET and POST requests
+import requests # For weather, news requests module is used for making GET and POST requests
 from pprint import pprint # for weather
+import wolframalpha # For mathematical calculations and general knowledge questions
 
 engine = pyttsx3.init('sapi5') # sapi -> Speech Application Programming Interface (to use inbuilt voice in windows)
 voices = engine.getProperty('voices')
@@ -187,6 +188,29 @@ if (__name__ == "__main__"):
             except:
                 speak('City name not found')
 
+        elif "news" in query:
+            # BBC news api 
+            main_url = " https://newsapi.org/v1/articles?source=bbc-news&sortBy=top&apiKey=YOUR_API_ID_HERE"
+  
+            # fetching data in json format 
+            open_bbc_page = requests.get(main_url).json() 
+      
+            # getting all articles in a string article 
+            article = open_bbc_page["articles"] 
+  
+            # empty list which will  
+            # contain all trending news 
+            results = [] 
+              
+            for ar in article: 
+                results.append(ar["title"]) 
+                  
+            for i in range(len(results)): 
+                  
+                # printing all trending news
+                print(results[i])
+                speak(results[i])
+
         elif "day" in query: # What day is it today
             day = datetime.datetime.today().weekday() + 1
       
@@ -282,3 +306,13 @@ if (__name__ == "__main__"):
             speak("It was nice serving you...")
             speak("Goodbye... See you soon, have a nice day ahead")
             break
+
+        elif ("calculate" in query) or ("who is" in query) or ("what is" in query): # Calculate sin(30), What is Capital Of India, who is president of India, US
+            app_id = 'YOUR_API_ID_HERE'
+            client = wolframalpha.Client(app_id)
+            res = client.query(query)
+            try: 
+                print (next(res.results).text) 
+                speak (next(res.results).text) 
+            except StopIteration: 
+                speak("No results")
