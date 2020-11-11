@@ -1,12 +1,14 @@
-import pyttsx3 # For speak() function
+import pyttsx3 # For speak() function. pyttsx3 is the module for conversion of text to speech
 import datetime # for wishMe() function
-import speech_recognition as sr # for takeCommand() function
+import speech_recognition as sr # for takeCommand() function. speech_recognition is the process of converting audio to text
 import wikipedia
 import webbrowser # for opening websites
 import os # for playing music
 from random import randint
 from selenium import webdriver # For Web Scraping
 import pyjokes
+import requests # For weather. requests module is used for making GET and POST requests
+from pprint import pprint # for weather
 
 engine = pyttsx3.init('sapi5') # sapi -> Speech Application Programming Interface (to use inbuilt voice in windows)
 voices = engine.getProperty('voices')
@@ -68,6 +70,21 @@ def openApp(app): # Opens the specified app from our Computer
         files = os.listdir(directory)
         os.startfile(os.path.join(directory, files[files.index(app)]))
     return
+
+def weather_data(query):
+    res=requests.get('http://api.openweathermap.org/data/2.5/weather?'+query+'&APPID=b35975e18dc93725acb092f7272cc6b8&units=metric');
+    return res.json()
+        
+def speak_weather(result,city):
+    print("{}'s temperature: {}°C ".format(city,result['main']['temp']))
+    print("Wind speed: {} m/s".format(result['wind']['speed']))
+    print("Description: {}".format(result['weather'][0]['description']))
+    print("Weather: {}".format(result['weather'][0]['main']))
+    speak("{}'s temperature: {}°C ".format(city,result['main']['temp']))
+    speak("Wind speed: {} m/s".format(result['wind']['speed']))
+    speak("Description: {}".format(result['weather'][0]['description']))
+    speak("Weather: {}".format(result['weather'][0]['main']))
+    return
     
 if (__name__ == "__main__"):
     wishMe()
@@ -86,17 +103,17 @@ if (__name__ == "__main__"):
             except:
                 speak("Sorry. No results found")
 
-        elif 'google' in query:
+        elif 'google' in query: # Performs a google search. Give command as Search on Google
             speak("sir. what should i search on google")
             cm =takeCommand().lower()
             webbrowser.open('https://google.com/?#q='+ cm)
 
-        elif 'youtube' in query:
+        elif 'youtube' in query: # Performs a youtube search. GIve command as Search on Youtube
             speak("What should I search on youtube")
             command = takeCommand().lower()
             webbrowser.open('https://www.youtube.com/results?search_query= ' + command)
 
-        elif "facebook" in query:
+        elif "facebook" in query: # Logs in to Facebook. GIve command as Log in to facebook please
             driver = webdriver.Chrome("Your_Driver_Path")
             driver.get("https://facebook.com")
             searchbox = driver.find_element_by_xpath('//*[@id="email"]')
@@ -106,7 +123,7 @@ if (__name__ == "__main__"):
             searchButton = driver.find_element_by_xpath('//*[@id="u_0_b"]')
             searchButton.click()
 
-        elif "outlook" in query:
+        elif "outlook" in query: # Opens Outlook
             driver = webdriver.Chrome("Your_Driver_Path")
             driver.get("https://outlook.live.com")
     
@@ -119,7 +136,7 @@ if (__name__ == "__main__"):
             searchButton = driver.find_element_by_xpath('//*[@id="idSIButton9"]')
             searchButton.click()
 
-        elif "moodle" in query:
+        elif "moodle" in query: # Command : Take me to moodle Jarvis
             driver = webdriver.Chrome("Your_Driver_Path")
             driver.get("https://moodle.coep.org.in")
 
@@ -132,7 +149,7 @@ if (__name__ == "__main__"):
             searchButton = driver.find_element_by_xpath('//*[@id="loginbtn"]')
             searchButton.click()
 
-        elif "mis" in query:
+        elif "mis" in query: # Command : Open mis portal Jarvis
             driver = webdriver.Chrome("Your_Driver_Path")
             driver.get("http://portal.coep.org.in:9093/SignUp?ReturnUrl=%2f")
 
@@ -157,7 +174,20 @@ if (__name__ == "__main__"):
         elif "thank you" in query:
             speak("You are Welcome!!")
 
-        elif "day" in query:
+        elif "weather" in query:
+            speak("please tell me your city name")
+            city = takeCommand()
+            #city = "mumbai"
+            print()
+            try:
+                query='q='+city;
+                w_data=weather_data(query);
+                speak_weather(w_data, city)
+                print()
+            except:
+                speak('City name not found')
+
+        elif "day" in query: # What day is it today
             day = datetime.datetime.today().weekday() + 1
       
             #this line tells us about the number  
@@ -175,7 +205,7 @@ if (__name__ == "__main__"):
             speak("The time is")
             speak(strTime)
 
-        elif "date" in query:
+        elif "date" in query: # Tell me what date it is Jarvis
             strDate = str(datetime.date.today())
             speak("The date is")
             speak(strDate)
@@ -231,7 +261,9 @@ if (__name__ == "__main__"):
         elif "show note" in query: 
             speak("Showing Notes") 
             file = open("notes.txt", "r")  
-            print(file.read())
+            string = file.read()
+            print(string)
+            speak(string)
 
         elif "delete note" in query:
             speak("Which note do you want to delete?")
