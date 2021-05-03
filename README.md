@@ -15,6 +15,7 @@ Some examples of commands to Jarvis:
 7. Take a Note for me
 8. Show me my notes
 9. What is 7 + 9 - 6 * 63
+10. Perform a Google Search for me
 
 Group Members:
 
