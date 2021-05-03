@@ -7,10 +7,14 @@ project.py is the code file. To run the file, first pip install everything from 
 Some examples of commands to Jarvis:
 
 1. What is your name?
-2. Tell me today's day/date?
+2. Tell me today's day/date/time?
 3. Brief me with current news
 4. Open Command Prompt
 5. Sachin Tendulkar Wikipedia
+6. How is the weather today?
+7. Take a Note for me
+8. Show me my notes
+9. What is 7 + 9 - 6 * 63
 
 Group Members:
 
